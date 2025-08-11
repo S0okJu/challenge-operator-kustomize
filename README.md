@@ -1,0 +1,1 @@
+# challenge-operator-kustomize
