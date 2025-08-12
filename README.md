@@ -1,5 +1,3 @@
-# Challenge Operator Kustomize
-
 ## Introduction
 A Kustomize for deploying challenge operator. 
 
