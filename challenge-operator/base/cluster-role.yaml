@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: challenge-operator-role
+  labels:
+    app: challenge-operator
+rules:
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps.hexactf.io"]
+    resources: ["challenges", "challenges/status"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps.hexactf.io"]
+    resources: ["challengedefinitions"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]

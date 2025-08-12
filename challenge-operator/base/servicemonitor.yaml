@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: challenge-operator-monitor
+  namespace: hexactf  
+  labels:
+    release: prometheus  
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: challenge-operator
+      app.kubernetes.io/component: metrics
+  namespaceSelector:
+    matchNames:
+      - hexactf
+      - challenge
+      - default  
+  endpoints:
+    - port: operator-metrics
+      interval: 15s
+      scrapeTimeout: 10s
+      path: /metrics  
+      scheme: http  

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: challenge-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: challenge-operator
+  template:
+    metadata:
+      labels:
+        app: challenge-operator
+    spec:
+      securityContext:
+          runAsUser: 1000  
+          runAsGroup: 1000  
+          fsGroup: 1000  
+          runAsNonRoot: true  
+
+      nodeSelector:
+        hexactf/env: mgmt
+      serviceAccountName: challenge-operator-sa  
+      containers:
+        - name: challenge-operator
+          image: 10.0.10.156:30002/hexactf/challenge-operator:latest  
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - containerPort: 8080
+          args:
+            - "--metrics-bind-address=:8080"
+          env:
+            - name: DEVELOPMENT
+              value: "false"  # Default value
+            - name: METRICS_ADDR
+              value: ":8080"
+            - name: LOG_LEVEL
+              value: "info"
+            - name: KUBECONFIG
+              value: "/home/ubuntu/.kube/config"  # Matches mountPath
+          volumeMounts:
+            - name: kubeconfig
+              mountPath: /home/ubuntu/.kube
+              readOnly: true
+          envFrom:
+            - secretRef:
+                name: challenge-operator-secrets
+      volumes:
+        - name: kubeconfig
+          hostPath:
+            path: /tmp/k

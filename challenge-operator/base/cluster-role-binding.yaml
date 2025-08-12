@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: challenge-operator-rolebinding
+  labels:
+    app: challenge-operator
+subjects:
+  - kind: ServiceAccount
+    name: challenge-operator-sa
+    namespace: challenge 
+  - kind: ServiceAccount
+    name: challenge-operator-sa
+    namespace: hexactf
+  - kind: ServiceAccount
+    name: challenge-operator-sa
+    namespace: default
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: challenge-operator-role
+  apiGroup: rbac.authorization.k8s.io
